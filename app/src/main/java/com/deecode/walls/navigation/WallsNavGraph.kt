@@ -94,9 +94,6 @@ fun WallsNavGraph(
             ActressDetailScreen(
                 actressId = actressId,
                 onBackClick = { navController.popBackStack() },
-                onAlbumClick = { albumUrl, albumName ->
-                    navController.navigate(Screen.AlbumDetail.createRoute(albumUrl, albumName))
-                },
                 onImageClick = { imageUrl, actressName ->
                     navController.navigate(Screen.ImageViewer.createRoute(imageUrl, actressName))
                 }

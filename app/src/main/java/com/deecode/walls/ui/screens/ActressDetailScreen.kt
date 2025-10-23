@@ -1,41 +1,38 @@
 package com.deecode.walls.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import com.deecode.walls.ui.common.UiState
-import com.deecode.walls.ui.components.AlbumCard
 import com.deecode.walls.ui.components.ErrorView
+import com.deecode.walls.ui.components.ImageCard
 import com.deecode.walls.ui.components.LoadingView
 import com.deecode.walls.ui.viewmodel.ActressDetailViewModel
 
@@ -44,7 +41,6 @@ import com.deecode.walls.ui.viewmodel.ActressDetailViewModel
 fun ActressDetailScreen(
     actressId: String,
     onBackClick: () -> Unit,
-    onAlbumClick: (String, String) -> Unit,
     onImageClick: (String, String) -> Unit,
     viewModel: ActressDetailViewModel = viewModel()
 ) {
@@ -58,12 +54,30 @@ fun ActressDetailScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        "Profile Details",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    when (val state = uiState) {
+                        is UiState.Success -> {
+                            Text(
+                                text = state.data.name,
+                                style = MaterialTheme.typography.headlineSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        else -> {
+                            Text(
+                                "Profile Details",
+                                style = MaterialTheme.typography.headlineSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                )
+                            )
+                        }
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -97,12 +111,12 @@ fun ActressDetailScreen(
                         else -> {}
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 ),
-                modifier = Modifier.height(56.dp)
-                )
+                modifier = Modifier.height(64.dp)
+            )
         }
     ) { paddingValues ->
         when (val state = uiState) {
@@ -113,96 +127,21 @@ fun ActressDetailScreen(
             is UiState.Success -> {
                 val actress = state.data
 
-                LazyColumn(
+                // Show only images in 2-column grid
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    contentPadding = PaddingValues(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Header info
-                    item {
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                        ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    text = actress.name,
-                                    style = MaterialTheme.typography.headlineMedium
-                                )
-
-                                if (actress.profession != null) {
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = actress.profession,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-
-                                if (actress.nationality != null) {
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = "Nationality: ${actress.nationality}",
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-
-                                if (actress.bio != null && actress.bio.isNotBlank()) {
-                                    Spacer(modifier = Modifier.height(12.dp))
-                                    Text(
-                                        text = actress.bio,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    // Images section
-                    if (actress.images.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Images (${actress.images.size})",
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                        }
-
-                        items(actress.images) { imageUrl ->
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                                onClick = { onImageClick(imageUrl, actress.name) }
-                            ) {
-                                AsyncImage(
-                                    model = imageUrl,
-                                    contentDescription = actress.name,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(400.dp),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
-                        }
-                    }
-
-                    // Albums section
-                    if (actress.albums.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Albums (${actress.albums.size})",
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                        }
-
-                        items(actress.albums) { album ->
-                            AlbumCard(
-                                name = album.name,
-                                thumbnail = album.thumbnail,
-                                onClick = { onAlbumClick(album.url, album.name) }
-                            )
-                        }
+                    items(actress.images) { imageUrl ->
+                        ImageCard(
+                            imageUrl = imageUrl,
+                            onClick = { onImageClick(imageUrl, actress.name) }
+                        )
                     }
                 }
             }
