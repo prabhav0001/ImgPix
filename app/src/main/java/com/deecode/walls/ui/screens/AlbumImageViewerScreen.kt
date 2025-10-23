@@ -16,25 +16,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.deecode.walls.ui.common.UiState
-import com.deecode.walls.ui.viewmodel.ActressDetailViewModel
+import com.deecode.walls.ui.viewmodel.AlbumViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageViewerScreen(
-    actressId: String,
+fun AlbumImageViewerScreen(
+    albumUrl: String,
     imageIndex: Int,
-    viewModel: ActressDetailViewModel = viewModel()
+    viewModel: AlbumViewModel = viewModel()
 ) {
-    // Load actress detail to get images
-    LaunchedEffect(actressId) {
-        viewModel.loadActressDetail(actressId)
+    // Load album photos
+    LaunchedEffect(albumUrl) {
+        viewModel.loadAlbumPhotos(albumUrl)
     }
 
-    val uiState by viewModel.actressDetail.collectAsState()
+    val uiState by viewModel.albumPhotos.collectAsState()
 
     when (val state = uiState) {
         is UiState.Success -> {
-            val images = state.data.images
+            val images = state.data
             val pagerState = rememberPagerState(
                 initialPage = imageIndex.coerceIn(0, images.size - 1),
                 pageCount = { images.size }
@@ -60,58 +60,61 @@ fun ImageViewerScreen(
                     ) {
                         AsyncImage(
                             model = images[page],
-                            contentDescription = state.data.name,
+                            contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .then(
-                                    // Only add gesture detection when zoomed
-                                    if (scale > 1f) {
-                                        Modifier.pointerInput(Unit) {
-                                            detectTransformGestures { _, pan, zoom, _ ->
-                                                scale = (scale * zoom).coerceIn(1f, 5f)
-
-                                                if (scale > 1f) {
-                                                    val maxX = (size.width * (scale - 1)) / 2
-                                                    val maxY = (size.height * (scale - 1)) / 2
-
-                                                    offsetX = (offsetX + pan.x).coerceIn(-maxX, maxX)
-                                                    offsetY = (offsetY + pan.y).coerceIn(-maxY, maxY)
-                                                } else {
-                                                    offsetX = 0f
-                                                    offsetY = 0f
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        // When not zoomed, only detect pinch to zoom in
-                                        Modifier.pointerInput(Unit) {
-                                            detectTransformGestures { _, _, zoom, _ ->
-                                                if (zoom != 1f) {
-                                                    scale = (scale * zoom).coerceIn(1f, 5f)
-                                                }
-                                            }
-                                        }
-                                    }
-                                )
                                 .graphicsLayer(
                                     scaleX = scale,
                                     scaleY = scale,
                                     translationX = offsetX,
                                     translationY = offsetY
-                                ),
+                                )
+                                .pointerInput(Unit) {
+                                    detectTransformGestures { _, pan, zoom, _ ->
+                                        scale = (scale * zoom).coerceIn(1f, 5f)
+
+                                        if (scale > 1f) {
+                                            offsetX += pan.x
+                                            offsetY += pan.y
+                                        } else {
+                                            offsetX = 0f
+                                            offsetY = 0f
+                                        }
+                                    }
+                                },
                             contentScale = ContentScale.Fit
                         )
+                    }
+
+                    // Reset zoom when page changes
+                    LaunchedEffect(page) {
+                        scale = 1f
+                        offsetX = 0f
+                        offsetY = 0f
                     }
                 }
             }
         }
-        else -> {
-            // Loading or error state - just show black screen
+        is UiState.Loading -> {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black)
-            )
+                    .background(Color.Black),
+                contentAlignment = Alignment.Center
+            ) {
+                // Loading indicator
+            }
         }
+        is UiState.Error -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black),
+                contentAlignment = Alignment.Center
+            ) {
+                // Error view
+            }
+        }
+        else -> {}
     }
 }

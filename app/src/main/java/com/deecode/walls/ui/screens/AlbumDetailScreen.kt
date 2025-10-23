@@ -37,7 +37,7 @@ fun AlbumDetailScreen(
     albumUrl: String,
     albumName: String,
     onBackClick: () -> Unit,
-    onImageClick: (String) -> Unit,
+    onImageClick: (String, Int) -> Unit,
     viewModel: AlbumViewModel = viewModel()
 ) {
     val uiState by viewModel.albumPhotos.collectAsState()
@@ -98,9 +98,10 @@ fun AlbumDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         items(photos) { photoUrl ->
+                            val photoIndex = photos.indexOf(photoUrl)
                             ImageCard(
                                 imageUrl = photoUrl,
-                                onClick = { onImageClick(photoUrl) }
+                                onClick = { onImageClick(albumUrl, photoIndex) }
                             )
                         }
                     }

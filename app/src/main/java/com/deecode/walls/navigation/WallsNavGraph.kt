@@ -94,6 +94,9 @@ fun WallsNavGraph(
             ActressDetailScreen(
                 actressId = actressId,
                 onBackClick = { navController.popBackStack() },
+                onAlbumClick = { albumUrl, albumName ->
+                    navController.navigate(Screen.AlbumDetail.createRoute(albumUrl, albumName))
+                },
                 onImageClick = { actressId, imageIndex ->
                     navController.navigate(Screen.ImageViewer.createRoute(actressId, imageIndex))
                 }
@@ -130,8 +133,8 @@ fun WallsNavGraph(
                 albumUrl = albumUrl,
                 albumName = albumName,
                 onBackClick = { navController.popBackStack() },
-                onImageClick = { _ ->
-                    // Album image viewer disabled - not integrated with swipe gallery yet
+                onImageClick = { albumUrl, imageIndex ->
+                    navController.navigate(Screen.AlbumImageViewer.createRoute(albumUrl, imageIndex))
                 }
             )
         }
@@ -154,6 +157,30 @@ fun WallsNavGraph(
 
             ImageViewerScreen(
                 actressId = actressId,
+                imageIndex = imageIndex
+            )
+        }
+
+        composable(
+            route = Screen.AlbumImageViewer.route,
+            arguments = listOf(
+                navArgument("albumUrl") { type = NavType.StringType },
+                navArgument("imageIndex") { type = NavType.IntType }
+            ),
+            enterTransition = {
+                fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(300))
+            }
+        ) { backStackEntry ->
+            val albumUrl = backStackEntry.arguments?.getString("albumUrl")?.let {
+                java.net.URLDecoder.decode(it, "UTF-8")
+            } ?: return@composable
+            val imageIndex = backStackEntry.arguments?.getInt("imageIndex") ?: 0
+
+            AlbumImageViewerScreen(
+                albumUrl = albumUrl,
                 imageIndex = imageIndex
             )
         }
