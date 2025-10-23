@@ -40,11 +40,11 @@ fun <T> LazyListScope.twoColumnGridSection(
         items(items.chunked(2)) { rowItems ->
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     rowItems.forEach { item ->
                         content(item, Modifier.weight(1f))

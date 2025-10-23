@@ -76,13 +76,13 @@ fun HomeScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = paddingValues.calculateTopPadding() + 12.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 12.dp
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = paddingValues.calculateTopPadding() + 16.dp,
+                            bottom = paddingValues.calculateBottomPadding() + 16.dp
                         ),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(actresses) { actress ->
                             ActressCard(
