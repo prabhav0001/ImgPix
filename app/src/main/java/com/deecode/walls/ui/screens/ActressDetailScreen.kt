@@ -39,6 +39,7 @@ import com.deecode.walls.ui.components.AlbumCard
 import com.deecode.walls.ui.components.ErrorView
 import com.deecode.walls.ui.components.ImageCard
 import com.deecode.walls.ui.components.LoadingView
+import com.deecode.walls.ui.components.twoColumnGridSection
 import com.deecode.walls.ui.viewmodel.ActressDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,82 +142,30 @@ fun ActressDetailScreen(
                     contentPadding = PaddingValues(12.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Images section header
-                    if (actress.images.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Images (${actress.images.size})",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                        }
-                    }
-
-                    // Images grid - using items with custom layout
-                    items(actress.images.chunked(2)) { rowImages ->
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            androidx.compose.foundation.layout.Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                rowImages.forEach { imageUrl ->
-                                    val imageIndex = actress.images.indexOf(imageUrl)
-                                    ImageCard(
-                                        imageUrl = imageUrl,
-                                        onClick = { onImageClick(actress.id, imageIndex) },
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                                // Add empty space if odd number
-                                if (rowImages.size == 1) {
-                                    androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(1f))
-                                }
-                            }
-                        }
+                    // Images section
+                    twoColumnGridSection(
+                        items = actress.images,
+                        title = "Images"
+                    ) { imageUrl, modifier ->
+                        val imageIndex = actress.images.indexOf(imageUrl)
+                        ImageCard(
+                            imageUrl = imageUrl,
+                            onClick = { onImageClick(actress.id, imageIndex) },
+                            modifier = modifier
+                        )
                     }
 
                     // Albums section
-                    if (actress.albums.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Albums (${actress.albums.size})",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-                            )
-                        }
-
-                        // Albums grid - using items with custom layout
-                        items(actress.albums.chunked(2)) { rowAlbums ->
-                            Column(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                androidx.compose.foundation.layout.Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                ) {
-                                    rowAlbums.forEach { album ->
-                                        AlbumCard(
-                                            name = album.name,
-                                            thumbnail = album.thumbnail,
-                                            onClick = { onAlbumClick(album.url, album.name) },
-                                            modifier = Modifier.weight(1f)
-                                        )
-                                    }
-                                    // Add empty space if odd number
-                                    if (rowAlbums.size == 1) {
-                                        androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(1f))
-                                    }
-                                }
-                            }
-                        }
+                    twoColumnGridSection(
+                        items = actress.albums,
+                        title = "Albums"
+                    ) { album, modifier ->
+                        AlbumCard(
+                            name = album.name,
+                            thumbnail = album.thumbnail,
+                            onClick = { onAlbumClick(album.url, album.name) },
+                            modifier = modifier
+                        )
                     }
                 }
             }
