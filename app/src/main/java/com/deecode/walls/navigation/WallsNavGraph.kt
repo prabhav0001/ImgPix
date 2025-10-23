@@ -65,6 +65,9 @@ fun WallsNavGraph(
             FavoritesScreen(
                 onActressClick = { actressId ->
                     navController.navigate(Screen.ActressDetail.createRoute(actressId))
+                },
+                onImageClick = { imageUrl, actressName ->
+                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, actressName))
                 }
             )
         }
@@ -93,6 +96,9 @@ fun WallsNavGraph(
                 onBackClick = { navController.popBackStack() },
                 onAlbumClick = { albumUrl, albumName ->
                     navController.navigate(Screen.AlbumDetail.createRoute(albumUrl, albumName))
+                },
+                onImageClick = { imageUrl, actressName ->
+                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, actressName))
                 }
             )
         }
@@ -126,6 +132,36 @@ fun WallsNavGraph(
             AlbumDetailScreen(
                 albumUrl = albumUrl,
                 albumName = albumName,
+                onBackClick = { navController.popBackStack() },
+                onImageClick = { imageUrl ->
+                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, albumName))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.ImageViewer.route,
+            arguments = listOf(
+                navArgument("imageUrl") { type = NavType.StringType },
+                navArgument("actressName") { type = NavType.StringType }
+            ),
+            enterTransition = {
+                fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(300))
+            }
+        ) { backStackEntry ->
+            val imageUrl = backStackEntry.arguments?.getString("imageUrl")?.let {
+                URLDecoder.decode(it, "UTF-8")
+            } ?: return@composable
+            val actressName = backStackEntry.arguments?.getString("actressName")?.let {
+                URLDecoder.decode(it, "UTF-8")
+            }?.takeIf { it.isNotBlank() }
+
+            ImageViewerScreen(
+                imageUrl = imageUrl,
+                actressName = actressName,
                 onBackClick = { navController.popBackStack() }
             )
         }

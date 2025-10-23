@@ -17,6 +17,7 @@ import com.deecode.walls.ui.viewmodel.FavoritesViewModel
 @Composable
 fun FavoritesScreen(
     onActressClick: (String) -> Unit,
+    onImageClick: (String, String) -> Unit,
     viewModel: FavoritesViewModel = viewModel()
 ) {
     val favoriteActresses by viewModel.favoriteActresses.collectAsState()
@@ -98,7 +99,7 @@ fun FavoritesScreen(
                             items(favoriteImages) { favorite ->
                                 ImageCard(
                                     imageUrl = favorite.imageUrl,
-                                    onClick = { /* TODO: Open image viewer */ }
+                                    onClick = { onImageClick(favorite.imageUrl, favorite.actressName) }
                                 )
                             }
                         }

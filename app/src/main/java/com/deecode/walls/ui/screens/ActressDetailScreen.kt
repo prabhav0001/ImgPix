@@ -45,6 +45,7 @@ fun ActressDetailScreen(
     actressId: String,
     onBackClick: () -> Unit,
     onAlbumClick: (String, String) -> Unit,
+    onImageClick: (String, String) -> Unit,
     viewModel: ActressDetailViewModel = viewModel()
 ) {
     val uiState by viewModel.actressDetail.collectAsState()
@@ -164,7 +165,8 @@ fun ActressDetailScreen(
                         items(actress.images) { imageUrl ->
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                onClick = { onImageClick(imageUrl, actress.name) }
                             ) {
                                 AsyncImage(
                                     model = imageUrl,

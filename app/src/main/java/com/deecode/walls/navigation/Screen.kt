@@ -15,4 +15,11 @@ sealed class Screen(val route: String) {
             return "album_detail/$encodedUrl/$encodedName"
         }
     }
+    object ImageViewer : Screen("image_viewer/{imageUrl}/{actressName}") {
+        fun createRoute(imageUrl: String, actressName: String?): String {
+            val encodedUrl = java.net.URLEncoder.encode(imageUrl, "UTF-8")
+            val encodedName = java.net.URLEncoder.encode(actressName ?: "", "UTF-8")
+            return "image_viewer/$encodedUrl/$encodedName"
+        }
+    }
 }
