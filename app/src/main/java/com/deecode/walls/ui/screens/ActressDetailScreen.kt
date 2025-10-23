@@ -59,7 +59,12 @@ fun ActressDetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Profile Details") },
+                title = { 
+                    Text(
+                        "Profile Details",
+                        style = MaterialTheme.typography.titleMedium
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -95,8 +100,9 @@ fun ActressDetailScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
+                ),
+                modifier = Modifier.height(56.dp)
                 )
-            )
         }
     ) { paddingValues ->
         when (val state = uiState) {

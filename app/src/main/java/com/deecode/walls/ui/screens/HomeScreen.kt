@@ -9,7 +9,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.*
@@ -31,8 +33,16 @@ fun HomeScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = { Text("Walls") },
+            CenterAlignedTopAppBar(
+                title = { 
+                    Text(
+                        "Walls",
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
+                    ) 
+                },
                 actions = {
                     IconButton(onClick = onThemeToggle) {
                         Icon(
@@ -41,10 +51,11 @@ fun HomeScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
-                )
+                ),
+                modifier = Modifier.height(64.dp)
             )
         }
     ) { paddingValues ->
@@ -65,10 +76,10 @@ fun HomeScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = paddingValues.calculateTopPadding() + 16.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 16.dp
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = paddingValues.calculateTopPadding() + 12.dp,
+                            bottom = paddingValues.calculateBottomPadding() + 12.dp
                         ),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
