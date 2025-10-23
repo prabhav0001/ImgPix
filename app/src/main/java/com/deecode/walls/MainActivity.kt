@@ -19,7 +19,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         preferencesManager = PreferencesManager(this)
 
+        // Enable edge-to-edge with transparent system bars
         enableEdgeToEdge()
+
         setContent {
             val isDarkTheme by preferencesManager.isDarkTheme.collectAsState(initial = false)
             val scope = rememberCoroutineScope()
