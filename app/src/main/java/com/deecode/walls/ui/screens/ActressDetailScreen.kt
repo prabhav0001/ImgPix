@@ -59,11 +59,11 @@ fun ActressDetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         "Profile Details",
                         style = MaterialTheme.typography.titleMedium
-                    ) 
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {

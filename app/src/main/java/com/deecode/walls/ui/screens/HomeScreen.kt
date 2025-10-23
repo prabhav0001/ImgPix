@@ -34,14 +34,14 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { 
+                title = {
                     Text(
                         "Walls",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 24.sp
                         )
-                    ) 
+                    )
                 },
                 actions = {
                     IconButton(onClick = onThemeToggle) {

@@ -50,11 +50,11 @@ fun AlbumDetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         albumName,
                         style = MaterialTheme.typography.titleMedium
-                    ) 
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {

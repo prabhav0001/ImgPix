@@ -53,14 +53,15 @@ fun ActressCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(60.dp)
                     .align(Alignment.BottomCenter)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
-                        .padding(12.dp)
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = actress.name,
@@ -68,20 +69,9 @@ fun ActressCard(
                             fontWeight = FontWeight.Bold
                         ),
                         color = Color.White,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-
-                    if (actress.profession != null) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = actress.profession,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White.copy(alpha = 0.9f),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
                 }
             }
         }
