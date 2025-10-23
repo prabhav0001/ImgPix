@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Wallpaper Gallery</string>
+    
+    <!-- Main Activity -->
+    <string name="search_wallpapers">Search wallpapers…</string>
+    <string name="no_wallpapers">No wallpapers found</string>
+    
+    <!-- Detail Activity -->
+    <string name="wallpaper_detail">Wallpaper Details</string>
+    <string name="wallpaper_image">Wallpaper Image</string>
+    <string name="wallpaper_preview">Wallpaper Preview</string>
+    <string name="photo_by">Photo by %1$s</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="share">Share</string>
+    <string name="download">Download</string>
+    
+    <!-- Messages -->
+    <string name="wallpaper_set_success">Wallpaper set successfully!</string>
+    <string name="wallpaper_set_error">Failed to set wallpaper</string>
+    <string name="share_wallpaper">Share Wallpaper</string>
+    <string name="check_out_wallpaper">Check out this amazing wallpaper: %1$s</string>
+    <string name="share_via">Share via</string>
+    <string name="download_feature_coming_soon">Download feature coming soon!</string>
+    
+    <!-- Menu -->
+    <string name="action_search">Search</string>
+</resources>
