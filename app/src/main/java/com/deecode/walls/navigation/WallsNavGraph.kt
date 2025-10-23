@@ -66,8 +66,8 @@ fun WallsNavGraph(
                 onActressClick = { actressId ->
                     navController.navigate(Screen.ActressDetail.createRoute(actressId))
                 },
-                onImageClick = { imageUrl, actressName ->
-                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, actressName))
+                onImageClick = { _, _ ->
+                    // Image click removed - favorites images can't be viewed in gallery
                 }
             )
         }
@@ -94,8 +94,8 @@ fun WallsNavGraph(
             ActressDetailScreen(
                 actressId = actressId,
                 onBackClick = { navController.popBackStack() },
-                onImageClick = { imageUrl, actressName ->
-                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, actressName))
+                onImageClick = { actressId, imageIndex ->
+                    navController.navigate(Screen.ImageViewer.createRoute(actressId, imageIndex))
                 }
             )
         }
@@ -130,8 +130,8 @@ fun WallsNavGraph(
                 albumUrl = albumUrl,
                 albumName = albumName,
                 onBackClick = { navController.popBackStack() },
-                onImageClick = { imageUrl ->
-                    navController.navigate(Screen.ImageViewer.createRoute(imageUrl, albumName))
+                onImageClick = { _ ->
+                    // Album image viewer disabled - not integrated with swipe gallery yet
                 }
             )
         }
@@ -139,8 +139,8 @@ fun WallsNavGraph(
         composable(
             route = Screen.ImageViewer.route,
             arguments = listOf(
-                navArgument("imageUrl") { type = NavType.StringType },
-                navArgument("actressName") { type = NavType.StringType }
+                navArgument("actressId") { type = NavType.StringType },
+                navArgument("imageIndex") { type = NavType.IntType }
             ),
             enterTransition = {
                 fadeIn(animationSpec = tween(300))
@@ -149,17 +149,12 @@ fun WallsNavGraph(
                 fadeOut(animationSpec = tween(300))
             }
         ) { backStackEntry ->
-            val imageUrl = backStackEntry.arguments?.getString("imageUrl")?.let {
-                URLDecoder.decode(it, "UTF-8")
-            } ?: return@composable
-            val actressName = backStackEntry.arguments?.getString("actressName")?.let {
-                URLDecoder.decode(it, "UTF-8")
-            }?.takeIf { it.isNotBlank() }
+            val actressId = backStackEntry.arguments?.getString("actressId") ?: return@composable
+            val imageIndex = backStackEntry.arguments?.getInt("imageIndex") ?: 0
 
             ImageViewerScreen(
-                imageUrl = imageUrl,
-                actressName = actressName,
-                onBackClick = { navController.popBackStack() }
+                actressId = actressId,
+                imageIndex = imageIndex
             )
         }
     }

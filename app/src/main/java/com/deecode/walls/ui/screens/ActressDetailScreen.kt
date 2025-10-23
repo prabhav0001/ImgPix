@@ -41,7 +41,7 @@ import com.deecode.walls.ui.viewmodel.ActressDetailViewModel
 fun ActressDetailScreen(
     actressId: String,
     onBackClick: () -> Unit,
-    onImageClick: (String, String) -> Unit,
+    onImageClick: (String, Int) -> Unit,
     viewModel: ActressDetailViewModel = viewModel()
 ) {
     val uiState by viewModel.actressDetail.collectAsState()
@@ -138,9 +138,10 @@ fun ActressDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(actress.images) { imageUrl ->
+                        val imageIndex = actress.images.indexOf(imageUrl)
                         ImageCard(
                             imageUrl = imageUrl,
-                            onClick = { onImageClick(imageUrl, actress.name) }
+                            onClick = { onImageClick(actress.id, imageIndex) }
                         )
                     }
                 }
