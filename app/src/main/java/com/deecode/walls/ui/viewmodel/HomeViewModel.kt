@@ -41,8 +41,4 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
     }
-
-    fun refresh() {
-        loadLatestGalleries()
-    }
 }

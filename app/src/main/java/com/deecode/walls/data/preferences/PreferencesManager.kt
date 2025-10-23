@@ -28,9 +28,4 @@ class PreferencesManager(private val context: Context) {
         }
     }
 
-    suspend fun setDarkTheme(isDark: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[DARK_THEME_KEY] = isDark
-        }
-    }
 }

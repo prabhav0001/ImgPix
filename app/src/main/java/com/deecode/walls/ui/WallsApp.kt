@@ -3,14 +3,20 @@ package com.deecode.walls.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -19,7 +25,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.deecode.walls.navigation.Screen
 import com.deecode.walls.navigation.WallsNavGraph
-import androidx.compose.foundation.layout.Box
 
 data class BottomNavItem(
     val route: String,
@@ -29,7 +34,6 @@ data class BottomNavItem(
 
 @Composable
 fun WallsApp(
-    isDarkTheme: Boolean,
     onThemeToggle: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -38,7 +42,7 @@ fun WallsApp(
 
     val bottomNavItems = listOf(
         BottomNavItem(Screen.Home.route, Icons.Default.Home, "Home"),
-        BottomNavItem(Screen.Browse.route, Icons.Default.List, "Browse"),
+        BottomNavItem(Screen.Browse.route, Icons.AutoMirrored.Filled.List, "Browse"),
         BottomNavItem(Screen.Search.route, Icons.Default.Search, "Search"),
         BottomNavItem(Screen.Favorites.route, Icons.Default.Favorite, "Favorites")
     )

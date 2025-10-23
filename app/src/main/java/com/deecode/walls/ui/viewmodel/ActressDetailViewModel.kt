@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.deecode.walls.data.local.FavoriteActress
-import com.deecode.walls.data.local.FavoriteImage
 import com.deecode.walls.data.local.WallsDatabase
 import com.deecode.walls.data.model.ActressDetail
 import com.deecode.walls.data.remote.RetrofitInstance
@@ -68,21 +67,4 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun toggleImageFavorite(imageUrl: String, actressId: String, actressName: String) {
-        viewModelScope.launch {
-            repository.isFavoriteImage(imageUrl).collect { isFav ->
-                if (isFav) {
-                    repository.removeFavoriteImage(imageUrl)
-                } else {
-                    repository.addFavoriteImage(
-                        FavoriteImage(
-                            imageUrl = imageUrl,
-                            actressId = actressId,
-                            actressName = actressName
-                        )
-                    )
-                }
-            }
-        }
-    }
 }

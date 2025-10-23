@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 import com.deecode.walls.ui.screens.*
 import java.net.URLDecoder
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun WallsNavGraph(
     navController: NavHostController,

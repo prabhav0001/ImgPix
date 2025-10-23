@@ -93,11 +93,4 @@ class WallsRepository(
         favoriteDao.deleteFavoriteImageByUrl(imageUrl)
     }
 
-    fun getFavoriteActressCount(): Flow<Int> {
-        return favoriteDao.getFavoriteActressCount()
-    }
-
-    fun getFavoriteImageCount(): Flow<Int> {
-        return favoriteDao.getFavoriteImageCount()
-    }
 }

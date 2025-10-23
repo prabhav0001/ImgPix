@@ -53,15 +53,4 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         _selectedTab.value = index
     }
 
-    fun removeFavoriteActress(actressId: String) {
-        viewModelScope.launch {
-            repository.removeFavoriteActress(actressId)
-        }
-    }
-
-    fun removeFavoriteImage(imageUrl: String) {
-        viewModelScope.launch {
-            repository.removeFavoriteImage(imageUrl)
-        }
-    }
 }

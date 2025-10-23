@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
             WallsTheme(darkTheme = isDarkTheme) {
                 WallsApp(
-                    isDarkTheme = isDarkTheme,
                     onThemeToggle = {
                         scope.launch {
                             preferencesManager.toggleTheme()
