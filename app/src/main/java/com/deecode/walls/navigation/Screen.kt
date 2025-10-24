@@ -1,7 +1,6 @@
 package com.deecode.walls.navigation
 
 sealed class Screen(val route: String) {
-    object Splash : Screen("splash")
     object Home : Screen("home")
     object Browse : Screen("browse")
     object Search : Screen("search")

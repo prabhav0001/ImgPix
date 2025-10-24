@@ -18,23 +18,8 @@ fun WallsNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Home.route
     ) {
-        // Splash Screen
-        composable(
-            route = Screen.Splash.route,
-            enterTransition = { fadeIn(animationSpec = tween(300)) },
-            exitTransition = { fadeOut(animationSpec = tween(300)) }
-        ) {
-            SplashScreen(
-                onSplashFinished = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
-                }
-            )
-        }
-
         composable(
             route = Screen.Home.route,
             enterTransition = { fadeIn(animationSpec = tween(300)) },
