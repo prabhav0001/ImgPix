@@ -26,4 +26,9 @@ sealed class Screen(val route: String) {
             return "album_image_viewer/$encodedUrl/$imageIndex"
         }
     }
+    object FavoriteImageViewer : Screen("favorite_image_viewer/{imageIndex}") {
+        fun createRoute(imageIndex: Int): String {
+            return "favorite_image_viewer/$imageIndex"
+        }
+    }
 }

@@ -66,8 +66,8 @@ fun WallsNavGraph(
                 onActressClick = { actressId ->
                     navController.navigate(Screen.ActressDetail.createRoute(actressId))
                 },
-                onImageClick = { _, _ ->
-                    // Image click removed - favorites images can't be viewed in gallery
+                onImageClick = { imageIndex ->
+                    navController.navigate(Screen.FavoriteImageViewer.createRoute(imageIndex))
                 }
             )
         }
@@ -181,6 +181,25 @@ fun WallsNavGraph(
 
             AlbumImageViewerScreen(
                 albumUrl = albumUrl,
+                imageIndex = imageIndex
+            )
+        }
+
+        composable(
+            route = Screen.FavoriteImageViewer.route,
+            arguments = listOf(
+                navArgument("imageIndex") { type = NavType.IntType }
+            ),
+            enterTransition = {
+                fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(300))
+            }
+        ) { backStackEntry ->
+            val imageIndex = backStackEntry.arguments?.getInt("imageIndex") ?: 0
+
+            FavoriteImageViewerScreen(
                 imageIndex = imageIndex
             )
         }
