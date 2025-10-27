@@ -43,7 +43,7 @@ fun AlbumDetailScreen(
     albumName: String,
     onBackClick: () -> Unit,
     onImageClick: (String, Int) -> Unit,
-    viewModel: AlbumViewModel = viewModel()
+    viewModel: AlbumViewModel = viewModel(key = albumUrl)
 ) {
     val uiState by viewModel.albumPhotos.collectAsState()
     val favoriteImages by viewModel.favoriteImages.collectAsState()

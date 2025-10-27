@@ -43,7 +43,7 @@ fun ActressDetailScreen(
     onBackClick: () -> Unit,
     onAlbumClick: (String, String) -> Unit,
     onImageClick: (String, Int) -> Unit,
-    viewModel: ActressDetailViewModel = viewModel()
+    viewModel: ActressDetailViewModel = viewModel(key = actressId)
 ) {
     val uiState by viewModel.actressDetail.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
