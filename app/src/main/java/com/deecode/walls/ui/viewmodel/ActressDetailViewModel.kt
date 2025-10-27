@@ -37,6 +37,13 @@ class ActressDetailViewModel(application: Application) : BaseViewModel(applicati
                             _favoriteImages.value = favoriteUrls.intersect(detail.images.toSet())
                         }
                     }
+
+                    // Check if favorite actress using the actual ID from API response
+                    launch {
+                        repository.isFavoriteActress(detail.id).collect { isFav ->
+                            _isFavorite.value = isFav
+                        }
+                    }
                 },
                 onFailure = { error ->
                     _actressDetail.value = UiState.Error(
@@ -44,22 +51,24 @@ class ActressDetailViewModel(application: Application) : BaseViewModel(applicati
                     )
                 }
             )
-
-            // Check if favorite actress
-            repository.isFavoriteActress(actressId).collect { isFav ->
-                _isFavorite.value = isFav
-            }
         }
     }
 
     fun toggleFavorite(actressId: String, name: String, thumbnail: String?) {
         viewModelScope.launch {
+            // Use the correct ID from the loaded detail if available
+            val correctId = (_actressDetail.value as? UiState.Success)?.data?.id ?: actressId
+
             if (_isFavorite.value) {
+                // Remove both old and new ID to ensure cleanup
                 repository.removeFavoriteActress(actressId)
+                if (correctId != actressId) {
+                    repository.removeFavoriteActress(correctId)
+                }
             } else {
                 repository.addFavoriteActress(
                     FavoriteActress(
-                        id = actressId,
+                        id = correctId,  // Use correct ID from API
                         name = name,
                         thumbnail = thumbnail
                     )
