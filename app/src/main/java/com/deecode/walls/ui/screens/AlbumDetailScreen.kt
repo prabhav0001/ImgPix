@@ -75,7 +75,7 @@ fun AlbumDetailScreen(
                     }
                 },
                 scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
@@ -102,7 +102,6 @@ fun AlbumDetailScreen(
                             .fillMaxSize()
                             .padding(paddingValues)
                     ) {
-                        // Photo count section
                         Text(
                             text = "Photos (${photos.size})",
                             style = MaterialTheme.typography.titleLarge.copy(

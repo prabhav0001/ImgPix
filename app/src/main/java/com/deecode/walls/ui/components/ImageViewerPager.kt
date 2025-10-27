@@ -7,7 +7,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -29,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -41,14 +39,7 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 
 /**
- * Full-screen image viewer with horizontal swipe navigation and zoom capabilities
- *
- * Features:
- * - Swipe left/right to navigate between images
- * - Double tap to zoom in/out with smooth animation (cycles: 1x -> 2x -> 3x -> 1x)
- * - Smooth pinch to zoom (1x - 5x) with spring animation
- * - Pan/drag to move around when zoomed
- * - Image counter badge showing current position
+ * Full-screen image viewer with swipe navigation and zoom
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -129,9 +120,7 @@ fun ImageViewerPager(
                                     val event = awaitPointerEvent()
                                     val zoom = event.calculateZoom()
                                     val pan = event.calculatePan()
-                                    val centroid = event.calculateCentroid(useCurrent = false)
 
-                                    // Apply zoom with smooth spring animation
                                     if (zoom != 1f) {
                                         scope.launch {
                                             val newScale = (scale.value * zoom).coerceIn(1f, 5f)
@@ -139,7 +128,6 @@ fun ImageViewerPager(
                                         }
                                     }
 
-                                    // Apply pan when zoomed in
                                     if (scale.value > 1f) {
                                         val maxX = (size.width * (scale.value - 1)) / 2
                                         val maxY = (size.height * (scale.value - 1)) / 2

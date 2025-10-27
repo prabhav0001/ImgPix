@@ -91,10 +91,6 @@ class WallsRepository(
         return favoriteDao.getAllFavoriteImages()
     }
 
-    fun isFavoriteImage(imageUrl: String): Flow<Boolean> {
-        return favoriteDao.isFavoriteImage(imageUrl)
-    }
-
     suspend fun addFavoriteImage(image: FavoriteImage) {
         favoriteDao.insertFavoriteImage(image)
     }

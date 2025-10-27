@@ -178,7 +178,7 @@ fun WallsNavGraph(
             }
         ) { backStackEntry ->
             val albumUrl = backStackEntry.arguments?.getString("albumUrl")?.let {
-                java.net.URLDecoder.decode(it, "UTF-8")
+                URLDecoder.decode(it, "UTF-8")
             } ?: return@composable
             val imageIndex = backStackEntry.arguments?.getInt("imageIndex") ?: 0
 

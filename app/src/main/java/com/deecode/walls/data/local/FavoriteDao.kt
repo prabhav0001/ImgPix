@@ -36,9 +36,6 @@ interface FavoriteDao {
     @Query("SELECT * FROM favorite_images WHERE actressId = :actressId ORDER BY addedAt DESC")
     fun getFavoriteImagesByActress(actressId: String): Flow<List<FavoriteImage>>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM favorite_images WHERE imageUrl = :imageUrl)")
-    fun isFavoriteImage(imageUrl: String): Flow<Boolean>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteImage(image: FavoriteImage)
 

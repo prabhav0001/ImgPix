@@ -48,7 +48,6 @@ fun ActressCard(
     ) {
         Box {
             if (actress.thumbnail.isNullOrEmpty()) {
-                // Show placeholder for null/empty thumbnails
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -85,7 +84,6 @@ fun ActressCard(
                 )
             }
 
-            // Gradient overlay for text readability
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,7 +191,6 @@ fun ImageCard(
                 contentScale = ContentScale.Crop
             )
 
-            // Favorite icon overlay
             if (onFavoriteClick != null) {
                 IconButton(
                     onClick = onFavoriteClick,

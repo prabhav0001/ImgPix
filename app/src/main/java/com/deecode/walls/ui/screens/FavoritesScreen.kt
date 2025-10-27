@@ -39,7 +39,7 @@ fun FavoritesScreen(
                         )
                     )
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
@@ -51,8 +51,7 @@ fun FavoritesScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Tab row
-            TabRow(selectedTabIndex = selectedTab) {
+            PrimaryTabRow(selectedTabIndex = selectedTab) {
                 Tab(
                     selected = selectedTab == 0,
                     onClick = { viewModel.setSelectedTab(0) },
@@ -65,10 +64,8 @@ fun FavoritesScreen(
                 )
             }
 
-            // Content based on selected tab
             when (selectedTab) {
                 0 -> {
-                    // Favorite Actresses
                     if (favoriteActresses.isEmpty()) {
                         EmptyView(message = "No favorite profiles yet")
                     } else {
@@ -97,7 +94,6 @@ fun FavoritesScreen(
                 }
 
                 1 -> {
-                    // Favorite Images
                     if (favoriteImages.isEmpty()) {
                         EmptyView(message = "No favorite images yet")
                     } else {

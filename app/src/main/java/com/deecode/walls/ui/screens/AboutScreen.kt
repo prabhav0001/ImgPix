@@ -29,7 +29,6 @@ fun AboutScreen(
     val apiInfoState by viewModel.apiInfoState.collectAsState()
     val context = LocalContext.current
 
-    // Load API info on screen launch
     LaunchedEffect(Unit) {
         viewModel.loadApiInfo()
     }
@@ -57,7 +56,6 @@ fun AboutScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // App Info Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -87,7 +85,6 @@ fun AboutScreen(
                 }
             }
 
-            // API Info Card
             when (val state = apiInfoState) {
                 is UiState.Loading -> {
                     Card(modifier = Modifier.fillMaxWidth()) {
@@ -146,7 +143,7 @@ fun AboutScreen(
                                 text = state.message,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.error,
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                textAlign = TextAlign.Center
                             )
                             Button(onClick = { viewModel.loadApiInfo() }) {
                                 Text("Retry")
@@ -154,12 +151,9 @@ fun AboutScreen(
                         }
                     }
                 }
-                is UiState.Idle -> {
-                    // Do nothing, loading will start via LaunchedEffect
-                }
+                is UiState.Idle -> {}
             }
 
-            // Developer Info Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -223,7 +217,7 @@ private fun getAppVersion(context: android.content.Context): String {
             context.packageManager.getPackageInfo(context.packageName, 0)
         }
         packageInfo.versionName ?: "Unknown"
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         "Unknown"
     }
 }

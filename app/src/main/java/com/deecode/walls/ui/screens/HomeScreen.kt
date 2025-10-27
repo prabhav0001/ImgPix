@@ -35,7 +35,6 @@ fun HomeScreen(
         viewModel.loadLatestGalleries()
     }
 
-    // Stop refreshing when data is loaded
     LaunchedEffect(uiState) {
         if (uiState is UiState.Success || uiState is UiState.Error) {
             isRefreshing = false
@@ -93,7 +92,7 @@ fun HomeScreen(
                     }
                 },
                 scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
@@ -152,9 +151,7 @@ fun HomeScreen(
                     )
                 }
 
-                else -> {
-                    // Idle state
-                }
+                else -> {}
             }
         }
     }
