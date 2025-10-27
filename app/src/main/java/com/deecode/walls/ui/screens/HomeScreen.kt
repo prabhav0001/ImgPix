@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -26,9 +27,17 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.latestGalleries.collectAsState()
+    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadLatestGalleries()
+    }
+
+    // Stop refreshing when data is loaded
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Success || uiState is UiState.Error) {
+            isRefreshing = false
+        }
     }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -63,50 +72,61 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        when (val state = uiState) {
-            is UiState.Loading -> {
-                LoadingView(modifier = Modifier.padding(paddingValues))
-            }
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.loadLatestGalleries()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when (val state = uiState) {
+                is UiState.Loading -> {
+                    if (!isRefreshing) {
+                        LoadingView()
+                    }
+                }
 
-            is UiState.Success -> {
-                val actresses = state.data
+                is UiState.Success -> {
+                    val actresses = state.data
 
-                if (actresses.isEmpty()) {
-                    EmptyView(
-                        message = "No galleries available",
-                        modifier = Modifier.padding(paddingValues)
-                    )
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = paddingValues.calculateTopPadding() + 12.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 12.dp
-                        ),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(actresses) { actress ->
-                            ActressCard(
-                                actress = actress,
-                                onClick = { onActressClick(actress.id) }
-                            )
+                    if (actresses.isEmpty()) {
+                        EmptyView(
+                            message = "No galleries available"
+                        )
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(
+                                start = 12.dp,
+                                end = 12.dp,
+                                top = 12.dp,
+                                bottom = 12.dp
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(actresses) { actress ->
+                                ActressCard(
+                                    actress = actress,
+                                    onClick = { onActressClick(actress.id) }
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            is UiState.Error -> {
-                ErrorView(
-                    message = state.message,
-                    modifier = Modifier.padding(paddingValues)
-                )
-            }
+                is UiState.Error -> {
+                    ErrorView(
+                        message = state.message
+                    )
+                }
 
-            else -> {
-                // Idle state
+                else -> {
+                    // Idle state
+                }
             }
         }
     }
