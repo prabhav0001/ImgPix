@@ -53,6 +53,7 @@ fun ActressDetailScreen(
 ) {
     val uiState by viewModel.actressDetail.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
+    val favoriteImages by viewModel.favoriteImages.collectAsState()
 
     LaunchedEffect(actressId) {
         viewModel.loadActressDetail(actressId)
@@ -152,7 +153,15 @@ fun ActressDetailScreen(
                         ImageCard(
                             imageUrl = imageUrl,
                             onClick = { onImageClick(actress.id, imageIndex) },
-                            modifier = modifier
+                            modifier = modifier,
+                            isFavorite = favoriteImages.contains(imageUrl),
+                            onFavoriteClick = {
+                                viewModel.toggleImageFavorite(
+                                    imageUrl = imageUrl,
+                                    actressName = actress.name,
+                                    actressId = actress.id
+                                )
+                            }
                         )
                     }
 

@@ -46,6 +46,7 @@ fun AlbumDetailScreen(
     viewModel: AlbumViewModel = viewModel()
 ) {
     val uiState by viewModel.albumPhotos.collectAsState()
+    val favoriteImages by viewModel.favoriteImages.collectAsState()
 
     LaunchedEffect(albumUrl) {
         viewModel.loadAlbumPhotos(albumUrl)
@@ -122,7 +123,15 @@ fun AlbumDetailScreen(
                                 val photoIndex = photos.indexOf(photoUrl)
                                 ImageCard(
                                     imageUrl = photoUrl,
-                                    onClick = { onImageClick(albumUrl, photoIndex) }
+                                    onClick = { onImageClick(albumUrl, photoIndex) },
+                                    isFavorite = favoriteImages.contains(photoUrl),
+                                    onFavoriteClick = {
+                                        viewModel.toggleFavorite(
+                                            imageUrl = photoUrl,
+                                            actressName = albumName,
+                                            actressId = albumUrl
+                                        )
+                                    }
                                 )
                             }
                         }

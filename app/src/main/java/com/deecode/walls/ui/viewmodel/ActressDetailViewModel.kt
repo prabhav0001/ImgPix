@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.deecode.walls.data.local.FavoriteActress
+import com.deecode.walls.data.local.FavoriteImage
 import com.deecode.walls.data.local.WallsDatabase
 import com.deecode.walls.data.model.ActressDetail
 import com.deecode.walls.data.remote.RetrofitInstance
@@ -29,6 +30,9 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
+    private val _favoriteImages = MutableStateFlow<Set<String>>(emptySet())
+    val favoriteImages: StateFlow<Set<String>> = _favoriteImages.asStateFlow()
+
     fun loadActressDetail(actressId: String) {
         viewModelScope.launch {
             _actressDetail.value = UiState.Loading
@@ -36,6 +40,17 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
             repository.getActressDetail(actressId).fold(
                 onSuccess = { detail ->
                     _actressDetail.value = UiState.Success(detail)
+                    
+                    // Load favorite status for all images
+                    detail.images.forEach { imageUrl ->
+                        repository.isFavoriteImage(imageUrl).collect { isFav ->
+                            if (isFav) {
+                                _favoriteImages.value = _favoriteImages.value + imageUrl
+                            } else {
+                                _favoriteImages.value = _favoriteImages.value - imageUrl
+                            }
+                        }
+                    }
                 },
                 onFailure = { error ->
                     _actressDetail.value = UiState.Error(
@@ -61,6 +76,22 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
                         id = actressId,
                         name = name,
                         thumbnail = thumbnail
+                    )
+                )
+            }
+        }
+    }
+
+    fun toggleImageFavorite(imageUrl: String, actressName: String, actressId: String) {
+        viewModelScope.launch {
+            if (_favoriteImages.value.contains(imageUrl)) {
+                repository.removeFavoriteImage(imageUrl)
+            } else {
+                repository.addFavoriteImage(
+                    FavoriteImage(
+                        imageUrl = imageUrl,
+                        actressId = actressId,
+                        actressName = actressName
                     )
                 )
             }
