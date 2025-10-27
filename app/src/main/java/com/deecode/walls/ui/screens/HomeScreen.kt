@@ -39,7 +39,7 @@ fun HomeScreen(
                         "Walls",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
+                            fontSize = 22.sp
                         )
                     )
                 },
@@ -54,8 +54,7 @@ fun HomeScreen(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                modifier = Modifier.height(64.dp)
+                )
             )
         }
     ) { paddingValues ->
@@ -76,13 +75,13 @@ fun HomeScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = paddingValues.calculateTopPadding() + 16.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 16.dp
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = paddingValues.calculateTopPadding() + 12.dp,
+                            bottom = paddingValues.calculateBottomPadding() + 12.dp
                         ),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         items(actresses) { actress ->
                             ActressCard(

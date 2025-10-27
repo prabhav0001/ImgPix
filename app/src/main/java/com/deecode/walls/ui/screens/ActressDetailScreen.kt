@@ -67,9 +67,8 @@ fun ActressDetailScreen(
                         is UiState.Success -> {
                             Text(
                                 text = state.data.name,
-                                style = MaterialTheme.typography.headlineSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 20.sp
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.SemiBold
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -78,9 +77,8 @@ fun ActressDetailScreen(
                         else -> {
                             Text(
                                 "Profile Details",
-                                style = MaterialTheme.typography.headlineSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 20.sp
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.SemiBold
                                 )
                             )
                         }
@@ -125,8 +123,7 @@ fun ActressDetailScreen(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                     titleContentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                modifier = Modifier.height(64.dp)
+                )
             )
         }
     ) { paddingValues ->
