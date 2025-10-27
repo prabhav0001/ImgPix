@@ -40,15 +40,12 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
             repository.getActressDetail(actressId).fold(
                 onSuccess = { detail ->
                     _actressDetail.value = UiState.Success(detail)
-                    
-                    // Load favorite status for all images
-                    detail.images.forEach { imageUrl ->
-                        repository.isFavoriteImage(imageUrl).collect { isFav ->
-                            if (isFav) {
-                                _favoriteImages.value = _favoriteImages.value + imageUrl
-                            } else {
-                                _favoriteImages.value = _favoriteImages.value - imageUrl
-                            }
+
+                    // Load favorite status for all images (collect once for all)
+                    launch {
+                        repository.getAllFavoriteImages().collect { favoritesList ->
+                            val favoriteUrls = favoritesList.map { it.imageUrl }.toSet()
+                            _favoriteImages.value = favoriteUrls.intersect(detail.images.toSet())
                         }
                     }
                 },
@@ -59,7 +56,7 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
                 }
             )
 
-            // Check if favorite
+            // Check if favorite actress
             repository.isFavoriteActress(actressId).collect { isFav ->
                 _isFavorite.value = isFav
             }
