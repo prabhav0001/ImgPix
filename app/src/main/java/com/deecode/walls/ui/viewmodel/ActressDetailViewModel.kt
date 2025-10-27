@@ -1,28 +1,17 @@
 package com.deecode.walls.ui.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.deecode.walls.data.local.FavoriteActress
 import com.deecode.walls.data.local.FavoriteImage
-import com.deecode.walls.data.local.WallsDatabase
 import com.deecode.walls.data.model.ActressDetail
-import com.deecode.walls.data.remote.RetrofitInstance
-import com.deecode.walls.data.repository.WallsRepository
 import com.deecode.walls.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ActressDetailViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository: WallsRepository
-
-    init {
-        val database = WallsDatabase.getDatabase(application)
-        repository = WallsRepository(RetrofitInstance.api, database.favoriteDao())
-    }
+class ActressDetailViewModel(application: Application) : BaseViewModel(application) {
 
     private val _actressDetail = MutableStateFlow<UiState<ActressDetail>>(UiState.Idle)
     val actressDetail: StateFlow<UiState<ActressDetail>> = _actressDetail.asStateFlow()
