@@ -34,7 +34,7 @@ fun SearchScreen(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CenterAlignedTopAppBar(
+            CompactTopAppBar(
                 title = {
                     Text(
                         "Search",

@@ -47,7 +47,7 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CenterAlignedTopAppBar(
+            CompactTopAppBar(
                 title = {
                     Text(
                         "Walls",

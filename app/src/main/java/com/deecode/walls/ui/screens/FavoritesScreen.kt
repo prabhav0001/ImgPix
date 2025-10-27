@@ -29,7 +29,7 @@ fun FavoritesScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
+            CompactTopAppBar(
                 title = {
                     Text(
                         "Favorites",

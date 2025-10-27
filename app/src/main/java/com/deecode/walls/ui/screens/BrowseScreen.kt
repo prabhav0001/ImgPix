@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.ActressCard
+import com.deecode.walls.ui.components.CompactTopAppBar
 import com.deecode.walls.ui.components.EmptyView
 import com.deecode.walls.ui.components.ErrorView
 import com.deecode.walls.ui.components.LoadingView
@@ -65,7 +65,7 @@ fun BrowseScreen(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CenterAlignedTopAppBar(
+            CompactTopAppBar(
                 title = {
                     Text(
                         "Browse A-Z",
