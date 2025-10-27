@@ -55,13 +55,7 @@ class ActressDetailViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch {
             if (_isFavorite.value) {
                 repository.removeFavoriteActress(actressId)
-                println("Removed favorite - ID: $actressId")
             } else {
-                // Debug: Log thumbnail being saved
-                println("Saving favorite - ID: $actressId, Name: $name, Thumbnail: ${thumbnail ?: "NULL"}")
-                if (thumbnail == null) {
-                    println("WARNING: Thumbnail is null! This will cause display issues.")
-                }
                 repository.addFavoriteActress(
                     FavoriteActress(
                         id = actressId,
