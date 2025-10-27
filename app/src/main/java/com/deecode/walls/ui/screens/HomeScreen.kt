@@ -16,7 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.*
 import com.deecode.walls.ui.viewmodel.HomeViewModel
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,23 +25,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.latestGalleries.collectAsState()
-    var showSlowLoadingMessage by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadLatestGalleries()
-    }
-
-    // Show timeout message after 5 seconds of loading
-    LaunchedEffect(uiState) {
-        if (uiState is UiState.Loading) {
-            showSlowLoadingMessage = false
-            delay(5000) // 5 seconds
-            if (uiState is UiState.Loading) {
-                showSlowLoadingMessage = true
-            }
-        } else {
-            showSlowLoadingMessage = false
-        }
     }
 
     Scaffold(
@@ -76,10 +61,7 @@ fun HomeScreen(
     ) { paddingValues ->
         when (val state = uiState) {
             is UiState.Loading -> {
-                LoadingView(
-                    modifier = Modifier.padding(paddingValues),
-                    showTimeoutMessage = showSlowLoadingMessage
-                )
+                LoadingView(modifier = Modifier.padding(paddingValues))
             }
 
             is UiState.Success -> {
