@@ -26,6 +26,13 @@ fun FavoritesScreen(
     val favoriteImages by viewModel.favoriteImages.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
 
+    // Debug: Log favorite actresses
+    LaunchedEffect(favoriteActresses) {
+        favoriteActresses.forEach { actress ->
+            println("Favorite Actress - ID: ${actress.id}, Name: ${actress.name}, Thumbnail: ${actress.thumbnail}")
+        }
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {

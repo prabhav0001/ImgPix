@@ -33,6 +33,36 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     init {
         loadFavorites()
+        fixNullThumbnails()
+    }
+
+    private fun fixNullThumbnails() {
+        viewModelScope.launch {
+            repository.getAllFavoriteActresses().collect { actresses ->
+                actresses.forEach { actress ->
+                    if (actress.thumbnail.isNullOrEmpty()) {
+                        println("Found favorite with null thumbnail: ${actress.name} (${actress.id})")
+                        // Fetch actress details and update thumbnail
+                        repository.getActressDetail(actress.id).fold(
+                            onSuccess = { detail ->
+                                val thumbnail = detail.images.firstOrNull()
+                                    ?: detail.albums.firstOrNull()?.thumbnail
+                                
+                                if (thumbnail != null) {
+                                    println("Updating ${actress.name} with thumbnail: $thumbnail")
+                                    repository.addFavoriteActress(
+                                        actress.copy(thumbnail = thumbnail)
+                                    )
+                                }
+                            },
+                            onFailure = { 
+                                println("Failed to fetch details for ${actress.name}: ${it.message}")
+                            }
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun loadFavorites() {

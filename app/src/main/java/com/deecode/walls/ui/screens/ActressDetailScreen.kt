@@ -99,10 +99,17 @@ fun ActressDetailScreen(
                         is UiState.Success -> {
                             IconButton(
                                 onClick = {
+                                    // Use first image, or first album thumbnail as fallback
+                                    val thumbnail = state.data.images.firstOrNull()
+                                        ?: state.data.albums.firstOrNull()?.thumbnail
+
+                                    println("Actress Detail - Images count: ${state.data.images.size}, Albums count: ${state.data.albums.size}")
+                                    println("Selected thumbnail: ${thumbnail ?: "NULL"}")
+
                                     viewModel.toggleFavorite(
                                         state.data.id,
                                         state.data.name,
-                                        state.data.images.firstOrNull()
+                                        thumbnail
                                     )
                                 }
                             ) {
