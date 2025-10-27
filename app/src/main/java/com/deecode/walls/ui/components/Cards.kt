@@ -140,7 +140,7 @@ fun AlbumCard(
                 contentDescription = name,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.2f)
+                    .aspectRatio(0.75f)
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -192,7 +192,7 @@ fun ImageCard(
                     .aspectRatio(0.75f),
                 contentScale = ContentScale.Crop
             )
-            
+
             // Favorite icon overlay
             if (onFavoriteClick != null) {
                 IconButton(
