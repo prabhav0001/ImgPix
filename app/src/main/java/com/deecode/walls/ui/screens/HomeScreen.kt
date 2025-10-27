@@ -24,10 +24,12 @@ import com.deecode.walls.ui.viewmodel.HomeViewModel
 fun HomeScreen(
     onActressClick: (String) -> Unit,
     onThemeToggle: () -> Unit,
+    onAboutClick: () -> Unit = {},
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.latestGalleries.collectAsState()
     var isRefreshing by remember { mutableStateOf(false) }
+    var showMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadLatestGalleries()
@@ -62,6 +64,32 @@ fun HomeScreen(
                             imageVector = Icons.Default.Brightness6,
                             contentDescription = "Toggle theme"
                         )
+                    }
+                    Box {
+                        IconButton(onClick = { showMenu = true }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "More options"
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("About") },
+                                onClick = {
+                                    showMenu = false
+                                    onAboutClick()
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = "About"
+                                    )
+                                }
+                            )
+                        }
                     }
                 },
                 scrollBehavior = scrollBehavior,

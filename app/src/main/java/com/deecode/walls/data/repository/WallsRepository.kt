@@ -5,6 +5,7 @@ import com.deecode.walls.data.local.FavoriteDao
 import com.deecode.walls.data.local.FavoriteImage
 import com.deecode.walls.data.model.Actress
 import com.deecode.walls.data.model.ActressDetail
+import com.deecode.walls.data.model.ApiResponse
 import com.deecode.walls.data.remote.ActressApiService
 import kotlinx.coroutines.flow.Flow
 
@@ -14,6 +15,15 @@ class WallsRepository(
 ) {
 
     // API calls
+    suspend fun getApiInfo(): Result<ApiResponse> {
+        return try {
+            val response = apiService.getApiInfo()
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun getLatestGalleries(): Result<List<Actress>> {
         return try {
             val response = apiService.getLatestGalleries()

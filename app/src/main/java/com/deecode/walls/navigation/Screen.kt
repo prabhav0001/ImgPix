@@ -31,4 +31,5 @@ sealed class Screen(val route: String) {
             return "favorite_image_viewer/$imageIndex"
         }
     }
+    object About : Screen("about")
 }

@@ -29,7 +29,10 @@ fun WallsNavGraph(
                 onActressClick = { actressId ->
                     navController.navigate(Screen.ActressDetail.createRoute(actressId))
                 },
-                onThemeToggle = onThemeToggle
+                onThemeToggle = onThemeToggle,
+                onAboutClick = {
+                    navController.navigate(Screen.About.route)
+                }
             )
         }
 
@@ -201,6 +204,26 @@ fun WallsNavGraph(
 
             FavoriteImageViewerScreen(
                 imageIndex = imageIndex
+            )
+        }
+
+        composable(
+            route = Screen.About.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
+            }
+        ) {
+            AboutScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
