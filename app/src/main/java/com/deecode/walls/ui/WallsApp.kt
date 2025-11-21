@@ -17,9 +17,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -28,6 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import com.deecode.walls.R
 import com.deecode.walls.navigation.Screen
 import com.deecode.walls.navigation.WallsNavGraph
+import com.deecode.walls.ui.components.NoInternetView
+import com.deecode.walls.util.NetworkConnectivityObserver
 
 data class BottomNavItem(
     val route: String,
@@ -39,6 +44,10 @@ data class BottomNavItem(
 fun WallsApp(
     onThemeToggle: () -> Unit
 ) {
+    val context = LocalContext.current
+    val networkObserver = remember { NetworkConnectivityObserver(context) }
+    val isConnected by networkObserver.observe().collectAsState(initial = networkObserver.isConnected())
+
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -53,41 +62,50 @@ fun WallsApp(
     // Show bottom bar only on main screens
     val showBottomBar = currentDestination?.route in bottomNavItems.map { it.route }
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            AnimatedVisibility(
-                visible = showBottomBar,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                NavigationBar {
-                    bottomNavItems.forEach { item ->
-                        val label = stringResource(item.labelResId)
-                        NavigationBarItem(
-                            icon = { Icon(item.icon, contentDescription = label) },
-                            label = { Text(label) },
-                            selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                            onClick = {
-                                navController.navigate(item.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+    if (!isConnected) {
+        // Show no internet screen
+        NoInternetView(
+            onRetry = {
+                // Just checking connectivity, user needs to enable internet manually
+            }
+        )
+    } else {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                AnimatedVisibility(
+                    visible = showBottomBar,
+                    enter = slideInVertically(initialOffsetY = { it }),
+                    exit = slideOutVertically(targetOffsetY = { it })
+                ) {
+                    NavigationBar {
+                        bottomNavItems.forEach { item ->
+                            val label = stringResource(item.labelResId)
+                            NavigationBarItem(
+                                icon = { Icon(item.icon, contentDescription = label) },
+                                label = { Text(label) },
+                                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                                onClick = {
+                                    navController.navigate(item.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            WallsNavGraph(
-                navController = navController,
-                onThemeToggle = onThemeToggle
-            )
+        ) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+                WallsNavGraph(
+                    navController = navController,
+                    onThemeToggle = onThemeToggle
+                )
+            }
         }
     }
 }

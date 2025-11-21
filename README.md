@@ -22,10 +22,11 @@ A modern Android online gallery app built with Jetpack Compose and Material Desi
 
 ## 🔮 Roadmap
 - [x] **Download Manager**: Save high-quality images to device gallery.
-- [x] **Offline Access**: Cache galleries for offline viewing.
 - [ ] **Slideshow Mode**: Auto-play images in full-screen.
+- [ ] **Sharing**: Share images directly to other apps.
+- [ ] **Offline Access**: Cache galleries for offline viewing.
 - [ ] **Custom Collections**: Create and organize personal albums.
 - [ ] **Advanced Theming**: System auto-theme support.
 
 ## 📄 License
-For educational purposes. Data provided by [Actress Gallery API](https://actress-gallery-api-production.up.railway.app/).
+For educational purposes. Data provided by [Actress Gallery API](https://actress-gallery-api.onrender.com/).
