@@ -35,4 +35,10 @@
     <string name="tab_images">Images (%1$d)</string>
     <string name="no_favorites_profiles">No favorite profiles yet</string>
     <string name="no_favorites_images">No favorite images yet</string>
+
+    <!-- Download -->
+    <string name="downloading_image">Downloading image...</string>
+    <string name="download_started">Download started...</string>
+    <string name="download_failed">Download failed: %1$s</string>
+    <string name="download">Download</string>
 </resources>

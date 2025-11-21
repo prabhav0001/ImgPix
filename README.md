@@ -21,7 +21,7 @@ A modern Android online gallery app built with Jetpack Compose and Material Desi
 3. Sync Gradle and run on a device/emulator (Min SDK 24).
 
 ## 🔮 Roadmap
-- [ ] **Download Manager**: Save high-quality images to device gallery.
+- [x] **Download Manager**: Save high-quality images to device gallery.
 - [ ] **Slideshow Mode**: Auto-play images in full-screen.
 - [ ] **Sharing**: Share images directly to other apps.
 - [ ] **Offline Access**: Cache galleries for offline viewing.

@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,10 +35,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.deecode.walls.R
+import com.deecode.walls.util.ImageDownloader
 import kotlinx.coroutines.launch
 
 /**
@@ -48,6 +55,8 @@ fun ImageViewerPager(
     initialIndex: Int = 0,
     contentDescription: String? = null
 ) {
+    val context = LocalContext.current
+    val imageDownloader = remember { ImageDownloader(context) }
     val pagerState = rememberPagerState(
         initialPage = initialIndex.coerceIn(0, images.size - 1),
         pageCount = { images.size }
@@ -152,22 +161,46 @@ fun ImageViewerPager(
             }
         }
 
-        // Image counter indicator
-        Surface(
+        // Top Bar Controls
+        Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .statusBarsPadding()
-                .padding(top = 16.dp),
-            color = Color.Black.copy(alpha = 0.6f),
-            shape = RoundedCornerShape(20.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .fillMaxSize() // Fill size to allow alignment of children
         ) {
-            Text(
-                text = "${pagerState.currentPage + 1} / ${images.size}",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            )
+            // Image counter indicator
+            Surface(
+                modifier = Modifier.align(Alignment.TopCenter),
+                color = Color.Black.copy(alpha = 0.6f),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text(
+                    text = "${pagerState.currentPage + 1} / ${images.size}",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
+
+            // Download Button
+            Surface(
+                modifier = Modifier.align(Alignment.TopEnd),
+                color = Color.Black.copy(alpha = 0.6f),
+                shape = RoundedCornerShape(50),
+                onClick = {
+                    val currentImageUrl = images[pagerState.currentPage]
+                    imageDownloader.downloadImage(currentImageUrl)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Download,
+                    contentDescription = stringResource(R.string.download),
+                    tint = Color.White,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
     }
 }
