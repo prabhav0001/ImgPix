@@ -28,17 +28,11 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.latestGalleries.collectAsState()
-    var isRefreshing by remember { mutableStateOf(false) }
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     var showMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadLatestGalleries()
-    }
-
-    LaunchedEffect(uiState) {
-        if (uiState is UiState.Success || uiState is UiState.Error) {
-            isRefreshing = false
-        }
     }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -102,8 +96,7 @@ fun HomeScreen(
         PullToRefreshBox(
             isRefreshing = isRefreshing,
             onRefresh = {
-                isRefreshing = true
-                viewModel.loadLatestGalleries()
+                viewModel.loadLatestGalleries(isRefresh = true)
             },
             modifier = Modifier
                 .fillMaxSize()
@@ -111,9 +104,7 @@ fun HomeScreen(
         ) {
             when (val state = uiState) {
                 is UiState.Loading -> {
-                    if (!isRefreshing) {
-                        LoadingView()
-                    }
+                    LoadingView()
                 }
 
                 is UiState.Success -> {

@@ -14,9 +14,16 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     private val _latestGalleries = MutableStateFlow<UiState<List<Actress>>>(UiState.Idle)
     val latestGalleries: StateFlow<UiState<List<Actress>>> = _latestGalleries.asStateFlow()
 
-    fun loadLatestGalleries() {
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
+    fun loadLatestGalleries(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _latestGalleries.value = UiState.Loading
+            if (isRefresh) {
+                _isRefreshing.value = true
+            } else {
+                _latestGalleries.value = UiState.Loading
+            }
 
             repository.getLatestGalleries().fold(
                 onSuccess = { actresses ->
@@ -28,6 +35,10 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                     )
                 }
             )
+
+            if (isRefresh) {
+                _isRefreshing.value = false
+            }
         }
     }
 }
