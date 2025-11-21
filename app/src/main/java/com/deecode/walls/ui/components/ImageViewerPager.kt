@@ -85,7 +85,7 @@ fun ImageViewerPager(
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
-                                onDoubleTap = { tapOffset ->
+                                onDoubleTap = { _ ->
                                     scope.launch {
                                         // Cycle through zoom levels: 1x -> 2x -> 3x -> 1x
                                         val targetScale = when {
