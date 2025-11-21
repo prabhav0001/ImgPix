@@ -23,10 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.deecode.walls.R
 import com.deecode.walls.navigation.Screen
 import com.deecode.walls.navigation.WallsNavGraph
 import com.deecode.walls.ui.components.NoInternetView
@@ -35,7 +37,7 @@ import com.deecode.walls.util.NetworkConnectivityObserver
 data class BottomNavItem(
     val route: String,
     val icon: ImageVector,
-    val label: String
+    val labelResId: Int
 )
 
 @Composable
@@ -51,10 +53,10 @@ fun WallsApp(
     val currentDestination = navBackStackEntry?.destination
 
     val bottomNavItems = listOf(
-        BottomNavItem(Screen.Home.route, Icons.Default.Home, "Home"),
-        BottomNavItem(Screen.Browse.route, Icons.AutoMirrored.Filled.List, "Browse"),
-        BottomNavItem(Screen.Search.route, Icons.Default.Search, "Search"),
-        BottomNavItem(Screen.Favorites.route, Icons.Default.Favorite, "Favorites")
+        BottomNavItem(Screen.Home.route, Icons.Default.Home, R.string.nav_home),
+        BottomNavItem(Screen.Browse.route, Icons.AutoMirrored.Filled.List, R.string.nav_browse),
+        BottomNavItem(Screen.Search.route, Icons.Default.Search, R.string.nav_search),
+        BottomNavItem(Screen.Favorites.route, Icons.Default.Favorite, R.string.nav_favorites)
     )
 
     // Show bottom bar only on main screens
@@ -78,9 +80,10 @@ fun WallsApp(
                 ) {
                     NavigationBar {
                         bottomNavItems.forEach { item ->
+                            val label = stringResource(item.labelResId)
                             NavigationBarItem(
-                                icon = { Icon(item.icon, contentDescription = item.label) },
-                                label = { Text(item.label) },
+                                icon = { Icon(item.icon, contentDescription = label) },
+                                label = { Text(label) },
                                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                                 onClick = {
                                     navController.navigate(item.route) {

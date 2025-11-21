@@ -11,10 +11,12 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.deecode.walls.R
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.*
 import com.deecode.walls.ui.viewmodel.HomeViewModel
@@ -44,7 +46,7 @@ fun HomeScreen(
             CompactTopAppBar(
                 title = {
                     Text(
-                        "Walls",
+                        stringResource(R.string.home_title),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
@@ -55,14 +57,14 @@ fun HomeScreen(
                     IconButton(onClick = onThemeToggle) {
                         Icon(
                             imageVector = Icons.Default.Brightness6,
-                            contentDescription = "Toggle theme"
+                            contentDescription = stringResource(R.string.toggle_theme)
                         )
                     }
                     Box {
                         IconButton(onClick = { showMenu = true }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = "More options"
+                                contentDescription = stringResource(R.string.more_options)
                             )
                         }
                         DropdownMenu(
@@ -70,7 +72,7 @@ fun HomeScreen(
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("About") },
+                                text = { Text(stringResource(R.string.about)) },
                                 onClick = {
                                     showMenu = false
                                     onAboutClick()
@@ -78,7 +80,7 @@ fun HomeScreen(
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Default.Info,
-                                        contentDescription = "About"
+                                        contentDescription = stringResource(R.string.about)
                                     )
                                 }
                             )
@@ -112,7 +114,7 @@ fun HomeScreen(
 
                     if (actresses.isEmpty()) {
                         EmptyView(
-                            message = "No galleries available"
+                            message = stringResource(R.string.no_galleries)
                         )
                     } else {
                         LazyVerticalGrid(

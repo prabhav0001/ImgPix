@@ -31,10 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.deecode.walls.R
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.ActressCard
 import com.deecode.walls.ui.components.CompactTopAppBar
@@ -68,7 +70,7 @@ fun BrowseScreen(
             CompactTopAppBar(
                 title = {
                     Text(
-                        "Browse A-Z",
+                        stringResource(R.string.browse_title),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
@@ -122,7 +124,7 @@ fun BrowseScreen(
                     val actresses = state.data
 
                     if (actresses.isEmpty()) {
-                        EmptyView(message = "No actresses found for letter $selectedLetter")
+                        EmptyView(message = stringResource(R.string.no_actresses_found, selectedLetter))
                     } else {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),

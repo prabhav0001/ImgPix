@@ -11,10 +11,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.deecode.walls.R
 import com.deecode.walls.ui.common.UiState
 import com.deecode.walls.ui.components.*
 import com.deecode.walls.ui.viewmodel.SearchViewModel
@@ -37,7 +39,7 @@ fun SearchScreen(
             CompactTopAppBar(
                 title = {
                     Text(
-                        "Search",
+                        stringResource(R.string.search_title),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
@@ -64,11 +66,11 @@ fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Search actresses...") },
+                placeholder = { Text(stringResource(R.string.search_hint)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
+                        contentDescription = stringResource(R.string.search_title)
                     )
                 },
                 trailingIcon = {
@@ -76,7 +78,7 @@ fun SearchScreen(
                         IconButton(onClick = { viewModel.clearSearch() }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear"
+                                contentDescription = stringResource(R.string.clear_search)
                             )
                         }
                     }
@@ -95,7 +97,7 @@ fun SearchScreen(
                     val actresses = state.data
 
                     if (actresses.isEmpty()) {
-                        EmptyView(message = "No results found for \"$searchQuery\"")
+                        EmptyView(message = stringResource(R.string.no_results_found, searchQuery))
                     } else {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
@@ -119,7 +121,7 @@ fun SearchScreen(
 
                 is UiState.Idle -> {
                     EmptyView(
-                        message = "Enter at least 2 characters to search"
+                        message = stringResource(R.string.search_min_chars)
                     )
                 }
             }

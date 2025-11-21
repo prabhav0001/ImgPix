@@ -7,10 +7,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.deecode.walls.R
 import com.deecode.walls.data.model.Actress
 import com.deecode.walls.ui.components.*
 import com.deecode.walls.ui.viewmodel.FavoritesViewModel
@@ -32,7 +34,7 @@ fun FavoritesScreen(
             CompactTopAppBar(
                 title = {
                     Text(
-                        "Favorites",
+                        stringResource(R.string.favorites_title),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
@@ -55,19 +57,19 @@ fun FavoritesScreen(
                 Tab(
                     selected = selectedTab == 0,
                     onClick = { viewModel.setSelectedTab(0) },
-                    text = { Text("Profiles (${favoriteActresses.size})") }
+                    text = { Text(stringResource(R.string.tab_profiles, favoriteActresses.size)) }
                 )
                 Tab(
                     selected = selectedTab == 1,
                     onClick = { viewModel.setSelectedTab(1) },
-                    text = { Text("Images (${favoriteImages.size})") }
+                    text = { Text(stringResource(R.string.tab_images, favoriteImages.size)) }
                 )
             }
 
             when (selectedTab) {
                 0 -> {
                     if (favoriteActresses.isEmpty()) {
-                        EmptyView(message = "No favorite profiles yet")
+                        EmptyView(message = stringResource(R.string.no_favorites_profiles))
                     } else {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
@@ -95,7 +97,7 @@ fun FavoritesScreen(
 
                 1 -> {
                     if (favoriteImages.isEmpty()) {
-                        EmptyView(message = "No favorite images yet")
+                        EmptyView(message = stringResource(R.string.no_favorites_images))
                     } else {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
