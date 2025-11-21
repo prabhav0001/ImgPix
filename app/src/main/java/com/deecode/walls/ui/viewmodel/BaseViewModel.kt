@@ -16,6 +16,6 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     init {
         val database = WallsDatabase.getDatabase(application)
-        repository = WallsRepository(RetrofitInstance.api, database.favoriteDao())
+        repository = WallsRepository(RetrofitInstance.api, database.favoriteDao(), database.galleryDao())
     }
 }

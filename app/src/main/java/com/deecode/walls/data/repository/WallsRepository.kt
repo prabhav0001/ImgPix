@@ -3,6 +3,8 @@ package com.deecode.walls.data.repository
 import com.deecode.walls.data.local.FavoriteActress
 import com.deecode.walls.data.local.FavoriteDao
 import com.deecode.walls.data.local.FavoriteImage
+import com.deecode.walls.data.local.GalleryDao
+import com.deecode.walls.data.local.GalleryEntity
 import com.deecode.walls.data.model.Actress
 import com.deecode.walls.data.model.ActressDetail
 import com.deecode.walls.data.model.ApiResponse
@@ -11,7 +13,8 @@ import kotlinx.coroutines.flow.Flow
 
 class WallsRepository(
     private val apiService: ActressApiService,
-    private val favoriteDao: FavoriteDao
+    private val favoriteDao: FavoriteDao,
+    private val galleryDao: GalleryDao
 ) {
 
     // API calls
@@ -27,9 +30,40 @@ class WallsRepository(
     suspend fun getLatestGalleries(): Result<List<Actress>> {
         return try {
             val response = apiService.getLatestGalleries()
+            // Cache the result
+            val galleryEntities = response.map { actress ->
+                GalleryEntity(
+                    id = actress.id,
+                    name = actress.name,
+                    thumbnail = actress.thumbnail
+                )
+            }
+            galleryDao.clearGalleries()
+            galleryDao.insertGalleries(galleryEntities)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            // Try to get from cache
+            try {
+                val cachedGalleries = galleryDao.getGalleriesSnapshot()
+                if (cachedGalleries.isNotEmpty()) {
+                    val actresses = cachedGalleries.map { entity ->
+                        Actress(
+                            id = entity.id,
+                            name = entity.name,
+                            thumbnail = entity.thumbnail,
+                            age = null,
+                            nationality = null,
+                            profession = null,
+                            source = "local_cache"
+                        )
+                    }
+                    Result.success(actresses)
+                } else {
+                    Result.failure(e)
+                }
+            } catch (cacheError: Exception) {
+                Result.failure(e)
+            }
         }
     }
 
