@@ -12,13 +12,10 @@
 -keep class com.deecode.walls.data.model.** { *; }
 -keep class com.deecode.walls.data.local.** { *; }
 
-# Retrofit
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
-
-# Gson
--keep class com.google.gson.** { *; }
+# Retrofit & Gson
+# Note: Modern versions of Retrofit and Gson include their own consumer ProGuard rules.
+# We do not need to explicitly keep their packages (which causes "overly broad keep rule" warnings).
+# If you face issues, ensure you are using the latest versions or add specific rules.
 
 # --- Coroutines ---
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
