@@ -1,32 +1,39 @@
-# Walls
+# Walls - Actress Gallery Web App
 
-A modern Android online gallery app built with Jetpack Compose and Material Design 3.
+A premium, responsive web application for browsing actress galleries and albums. Built with Vite and Vanilla JavaScript.
 
-## ✨ Features
-- **Browse & Search**: Explore 8,000+ actress profiles and galleries.
-- **Favorites**: Save profiles and images locally.
-- **Modern UI**: Edge-to-edge design, dynamic theming, and smooth animations.
-- **Offline Support**: Graceful handling of network connectivity.
+## Features
+- **Latest Galleries**: Browse the newest updates.
+- **Search**: Find actresses by name.
+- **Detailed Profiles**: View bios, stats, and albums.
+- **High-Quality Photos**: immersive album viewing experience.
+- **Dark Mode**: Sleek, modern interface.
 
-## 🛠️ Tech Stack
-- **Language**: Kotlin
-- **UI**: Jetpack Compose (Material 3)
-- **Architecture**: MVVM
-- **Data**: Retrofit (Remote), Room (Local), DataStore (Prefs)
-- **Image Loading**: Coil
+## Getting Started
 
-## 🚀 Getting Started
-1. Clone the repo.
-2. Open in Android Studio.
-3. Sync Gradle and run on a device/emulator (Min SDK 24).
+1.  Navigate to the webapp directory:
+    ```bash
+    cd webapp
+    ```
 
-## 🔮 Roadmap
-- [x] **Download Manager**: Save high-quality images to device gallery.
-- [ ] **Slideshow Mode**: Auto-play images in full-screen.
-- [ ] **Sharing**: Share images directly to other apps.
-- [ ] **Offline Access**: Cache galleries for offline viewing.
-- [ ] **Custom Collections**: Create and organize personal albums.
-- [ ] **Advanced Theming**: System auto-theme support.
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
 
-## 📄 License
-For educational purposes. Data provided by [Actress Gallery API](https://actress-gallery-api.onrender.com/).
+3.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+
+4.  Open the local URL (e.g., `http://localhost:5173`) in your browser.
+
+## Building for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The output will be in `webapp/dist`.
