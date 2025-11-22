@@ -11,17 +11,12 @@ A premium, responsive web application for browsing actress galleries and albums.
 
 ## Getting Started
 
-1.  Navigate to the webapp directory:
-    ```bash
-    cd webapp
-    ```
-
-2.  Install dependencies:
+1.  Install dependencies:
     ```bash
     npm install
     ```
 
-3.  Start the development server:
+2.  Start the development server:
     ```bash
     npm run dev
     ```
